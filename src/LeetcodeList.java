@@ -277,4 +277,253 @@ public class LeetcodeList {
 //    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
 //
 //    }
+
+    //    给定两个字符串 s 和 t，它们只包含小写字母。
+//    字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。
+//    请找出在 t 中被添加的字母。
+    public char findTheDifference(String s, String t) {
+        char diff = 'a';
+        char[] sArr = s.toCharArray();
+        char[] tArr = t.toCharArray();
+        int sumSArr = 0;
+        int sumTArr = 0;
+        for (int i = 0; i < sArr.length; i++) {
+            int sChar = sArr[i];
+            int tChar = tArr[i];
+            sumSArr += sChar;
+            sumTArr += tChar;
+        }
+        diff = (char) (sumTArr - sumSArr + tArr[tArr.length - 1]);
+        return diff;
+    }
+
+    //    数组的每个索引作为一个阶梯，第 i个阶梯对应着一个非负数的体力花费值 cost[i](索引从0开始)。
+//    每当你爬上一个阶梯你都要花费对应的体力花费值，然后你可以选择继续爬一个阶梯或者爬两个阶梯。
+//    您需要找到达到楼层顶部的最低花费。在开始时，你可以选择从索引为 0 或 1 的元素作为初始阶梯。
+//    输入: cost = [10, 15, 20]
+//    输出: 15
+//    解释: 最低花费是从cost[1]开始，然后走两步即可到阶梯顶，一共花费15。
+//    输入: cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+//    输出: 6
+//    解释: 最低花费方式是从cost[0]开始，逐个经过那些1，跳过cost[3]，一共花费6。
+//    注意：
+//    cost 的长度将会在 [2, 1000]。
+//    每一个 cost[i] 将会是一个Integer类型，范围为 [0, 999]。
+    public int minCostClimbingStairs(int[] cost) {
+        int len = cost.length;
+        int prev = 0;
+        int curr = 0;
+        for (int i = 2; i <= len; i++) {
+            int next = Math.min(prev + cost[i - 2], curr + cost[i - 1]);
+            prev = curr;
+            curr = next;
+        }
+        return curr;
+    }
+
+    //    4.给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的中位数
+//    示例 1：
+//    输入：nums1 = [1,3], nums2 = [2]
+//    输出：2.00000
+//    解释：合并数组 = [1,2,3] ，中位数 2
+//    示例 2：
+//    输入：nums1 = [1,2], nums2 = [3,4]
+//    输出：2.50000
+//    解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+//    示例 3：
+//    输入：nums1 = [0,0], nums2 = [0,0]
+//    输出：0.00000
+//    示例 4：
+//    输入：nums1 = [], nums2 = [1]
+//    输出：1.00000
+//    示例 5：
+//    输入：nums1 = [2], nums2 = []
+//    输出：2.00000
+//    提示：
+//    nums1.length == m
+//    nums2.length == n
+//    0 <= m <= 1000
+//    0 <= n <= 1000
+//    1 <= m + n <= 2000
+//    -10^6 <= nums1[i], nums2[i] <= 10^6
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        double num = 0.00000;
+        int m = nums1.length;
+        int n = nums2.length;
+
+
+        return num;
+    }
+
+    //  给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        traversalForTree(root, list, 0);
+        return list;
+    }
+
+    private void traversalForTree(TreeNode root, List<List<Integer>> list, int level) {
+        if (root == null) {
+            return;
+        }
+        if (level == list.size()) {
+            list.add(new ArrayList<Integer>());
+        }
+        list.get(level).add(root.val);
+        traversalForTree(root.left, list, level + 1);
+        traversalForTree(root.right, list, level + 1);
+    }
+
+    //  给定一个二叉树，返回其节点值的锯齿形层序遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> list = new ArrayList<>();
+        traversal(root, list, 0);
+        return list;
+    }
+
+    private void traversal(TreeNode root, List<List<Integer>> list, int level) {
+        if (root == null) {
+            return;
+        }
+        if (level == list.size()) {
+            list.add(new ArrayList<Integer>());
+        }
+        if ((level & 1) == 1) {
+            list.get(level).add(0, root.val);
+        } else {
+            list.get(level).add(root.val);
+        }
+        traversal(root.left, list, level + 1);
+        traversal(root.right, list, level + 1);
+    }
+
+    //  387.给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1
+    public int firstUniqChar(String s) {
+//        Map<Character,Integer> map = new HashMap<>();
+//
+//        for(int i = 0;i< s.length();i++){
+//            if(map.get(s.charAt(i)) == null){
+//                map.put(s.charAt(i),1);
+//            }else{
+//                map.put(s.charAt(i),map.get(s.charAt(i))+1 );
+//            }
+//        }
+//        for(int i = 0;i< s.length();i++){
+//          if(map.get(s.charAt(i)) == 1){
+//              return i;
+//          }
+//        }
+//        return -1;
+        Queue<Pair> queue = new LinkedList<>();
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (!map.containsKey(s.charAt(i))) {
+                map.put(s.charAt(i), i);
+                queue.offer(new Pair(s.charAt(i), i));
+            } else {
+                map.put(s.charAt(i), -1);
+                while (!queue.isEmpty() && map.get(queue.peek().ch) == -1) {
+                    queue.poll();
+                }
+            }
+        }
+        return queue.isEmpty() ? -1 : queue.poll().pos;
+    }
+
+    //   135. 老师想给孩子们分发糖果，有 N 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
+//    你需要按照以下要求，帮助老师给这些孩子分发糖果：
+//    每个孩子至少分配到 1 个糖果。
+//    相邻的孩子中，评分高的孩子必须获得更多的糖果。
+//    那么这样下来，老师至少需要准备多少颗糖果呢？
+    public int candy(int[] ratings) {
+        List<Integer> list = new ArrayList<>();
+        int len = ratings.length;
+        int sum = 0;
+        for (int i = 0; i < len; i++) {
+            list.add(1);
+        }
+        for (int i = 1; i < len; i++) {
+            if (ratings[i] > ratings[i - 1] && list.get(i) <= list.get(i - 1)) {
+                list.set(i, list.get(i - 1) + 1);
+            }
+
+        }
+        for (int i = len - 1; i >= 1; i--) {
+            if (ratings[i - 1] > ratings[i] && list.get(i - 1) <= list.get(i)) {
+                list.set(i - 1, list.get(i) + 1);
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i);
+        }
+
+        return sum;
+    }
+
+    //    34.给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+//    如果数组中不存在目标值 target，返回 [-1, -1]。
+//    进阶：
+//    你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+        res[0] = binarySearch(nums, target, true);
+        res[1] = binarySearch(nums, target, false);
+        return res;
+    }
+
+    private int binarySearch(int[] nums, int target, boolean leftOrRight) {
+        int res = -1;
+        int left = 0, right = nums.length - 1, mid;
+        while (left <= right) {
+            mid = left + (right - left) / 2;
+            if (target < nums[mid])
+                right = mid - 1;
+            else if (target > nums[mid])
+                left = mid + 1;
+            else {
+                res = mid;
+                //处理target == nums[mid]
+                if (leftOrRight)
+                    right = mid - 1;
+                else
+                    left = mid + 1;
+            }
+        }
+        return res;
+    }
+
+    //    455.假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
+//    对每个孩子 i，都有一个胃口值 g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。如果 s[j] >= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.parallelSort(g);
+        Arrays.parallelSort(s);
+        int numsOfChild = g.length;
+        int numsOfCookie = s.length;
+        int count = 0;
+        for (int i = 0, j = 0; i < numsOfChild && j < numsOfCookie; i++, j++) {
+            while (j < numsOfCookie && g[i] > s[j]) {
+                j++;
+            }
+            if (j < numsOfCookie) {
+                count++;
+            }
+        }
+        return count;
+    }
+//    204.统计所有小于非负整数 n 的质数的数量。
+
+
+//    188.给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。
+//    设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。
+//    注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）
+
+    //    1046.有一堆石头，每块石头的重量都是正整数。
+//    每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x <= y。那么粉碎的可能结果如下：
+//    如果 x == y，那么两块石头都会被完全粉碎；
+//    如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。
+//    最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。
+//    public int lastStoneWeight(int[] stones) {
+//
+//    }
+
 }
